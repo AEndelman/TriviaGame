@@ -1,12 +1,17 @@
-//creates start button (and then hides it)<----TODO
+//sets up game and initial vars
 $("#start").click(askQuestion);
 
 //insert inbetween with correct or incorrect and timed... maybe giphy link
 
+$("#triviaName").append("FRUITY TRIVIA GAME!")
+$("#timer").hide();
+
 var correct = 0;
 var incorrect = 0;
 var questionsLeft = 8;
-var setTimeOut;
+var setSlideshow;
+var timerInterval;
+var timer = 15;
 
 
 //Sets up all the questions as an object then within them every question as an object array
@@ -65,28 +70,38 @@ var allQuestions = [
         incorrect: "Pips",
         incorrecter: "Cheeks",
         incorrectest: "Donsils"
+    }, {
+        question: "Which fruit has the highest oil content?",
+        correct: "Olive",
+        incorrect: "Avocado",
+        incorrecter: "Plum",
+        incorrectest: "Lychee"
+    }, {
+        question: "Every year there are, on average, there are how many banana-related accidents?",
+        correct: "300",
+        incorrect: "20",
+        incorrecter: "7",
+        incorrectest: "120"
     }];
 
-console.log(allQuestions);
-
 function askQuestion() {
+    timer = 15;
+    clearInterval(setSlideshow);
+    clearInterval(timerInterval);
+    $("#start").hide();
+    $("#triviaName").empty();
     $("#start").empty();
     $("#answerButtons").empty();
     $("#question").empty();
     $("#scoreSheet").empty();
     $("#images").empty();
-    clearInterval(setTimeOut);
-
+    $("#timer").show();
     //creates the timer count for question
-
-    setTimeOut = setInterval(timeOut, 7000);
-    $("#timer").append(setTimeOut);
+    runTimeOut();
 
     //Chooses a random question from the array and assigns it to questionChoice to later be accessed in for loop to create buttons
 
     var questionChoice = allQuestions[Math.floor(Math.random() * allQuestions.length)];
-
-    console.log(questionChoice);
 
     //checks to see if question has been asked already, if so then retrieves new question...
 
@@ -95,14 +110,14 @@ function askQuestion() {
         //Pulls the value of the question and assigns it to a variable
 
         var currentQuestionString = questionChoice.question;
-        console.log(currentQuestionString);
+
+        //pulls value of answer for the giphy (if so chosen)
+        var correctAnswerString = questionChoice.correct;
 
         // removes question from the object after reassigning and puts as header
 
         $("#question").append(currentQuestionString);
-
         delete questionChoice.question;
-        console.log(questionChoice);
 
         //Figures the number of possible questions based on the object number and subtracting the question
 
@@ -128,9 +143,6 @@ function askQuestion() {
         wrongAnswers.push(questionChoice.incorrecter);
         wrongAnswers.push(questionChoice.incorrectest);
 
-        console.log(correctAnswer);
-        console.log(wrongAnswers);
-
         //creates incorrect buttons
 
         for (i = 0; i < wrongAnswers.length; i++) {
@@ -149,7 +161,6 @@ function askQuestion() {
         for (j = 0; j < allButtons.length; j++) {
             var buttonChoice = allButtons[Math.floor(Math.random() * allButtons.length)];
             $("#answerButtons").append(buttonChoice);
-            console.log(buttonChoice);
         }
 
         // figures if button choice is wrong or right and alerts
@@ -157,19 +168,14 @@ function askQuestion() {
         $("button.answerButton").on("click", function () {
 
             var result = $(this).attr("data-result");
-            console.log(result);
 
             if (result === "true") {
-                alert("Correct!");
-                console.log(correct);
                 delete questionChoice;
                 showCorrectResult();
 
             }
 
             else if (result === "false") {
-                alert("Wrong!");
-                console.log(incorrect);
                 delete questionChoice;
                 showIncorrectResult();
             }
@@ -191,18 +197,16 @@ function triviaCont() {
         askQuestion();
     }
 
-    else {
-        $("#answerButtons").empty();
-        $("#question").empty();
-
-        document.write("Game Over! Correct: " + correct + " and Incorrect: " + incorrect);
+    else if (questionsLeft == 0) {
+        gameOver();
+        console.log(questionsLeft);
     }
 
     //should be slideshow loop then next question or if no questions left game over score...
 }
 
 function timeOut() {
-    clearInterval(setTimeOut);
+    clearInterval(timerInterval);
     delete questionChoice;
     showIncorrectResult();
 }
@@ -210,20 +214,23 @@ function timeOut() {
 function showCorrectResult() {
     $("#answerButtons").empty();
     $("#question").empty();
+    $("#timer").hide();
+    getGiphy();
     correct++;
     questionsLeft--;
-    getGiphy();
-    $("#scoreSheet").append("Total Correct:" +correct+ "and Total Incorrect:" +incorrect);
-    clearInterval(setTimeOut);
+    $("#triviaName").append("CORRECT")
+    console.log(questionsLeft);
 
     //checks if game over or repeat
 
     if (questionsLeft > 0) {
         //  (append scoresheet to show applause and scoresheet)
-        setTimeOut = setInterval(askQuestion, 4000);
+        clearInterval(setSlideshow);
+        clearInterval(timerInterval);
+        setSlideshow = setInterval(askQuestion, 4000);
     }
 
-    else if (questionsLeft = 0) {
+    else if (questionsLeft == 0) {
         gameOver();
     }
 
@@ -232,18 +239,25 @@ function showCorrectResult() {
 function showIncorrectResult() {
     $("#answerButtons").empty();
     $("#question").empty();
+    $("#timer").hide();
+    getGiphy();
     questionsLeft--;
     incorrect++;
-    getGiphy();
-    $("#scoreSheet").append("Total Correct: " + correct + "   and Total Incorrect: " + incorrect);
-    clearInterval(setTimeOut);
+    $("#triviaName").append("INCORRECT")
+    console.log(questionsLeft);
+
 
     if (questionsLeft > 0) {
         //  (append scoresheet to show boo and scoresheet)
-        setTimeOut = setInterval(askQuestion, 4000);
+        clearInterval(setSlideshow);
+        clearInterval(timerInterval);
+        setSlideshow = setInterval(askQuestion, 4000);
+
     }
 
-    else if (questionsLeft = 0) {
+    else if (questionsLeft == 0) {
+        $("#images").empty();
+        $("#images").hide();
         gameOver();
     }
 
@@ -280,14 +294,42 @@ $.ajax({
 
 }
 
+function runTimeOut () {
+    clearInterval(timerInterval);
+    timerInterval = setInterval(decrement, 1000);
+};
+
+//  The decrement function.
+function decrement() {
+
+    //  Decrease number by one.
+    timer--;
+
+    //  Show the number in the #timer tag.
+    $("#timer").text("00:" + timer );
+    console.log(timer);
+
+
+    //  Once number hits zero...
+    if (timer === 0) {
+
+        //  ...run the stop function.
+        clearInterval(setSlideshow);
+        clearInterval(timerInterval);
+        timeOut();
+
+    };
+};
+
 function gameOver() {
-    //  create div for the final output
-    //  display ("correct: + correct")
-    //  display ("incorrect: + incorrect")
+    clearInterval(setSlideshow);
+    clearInterval(timerInterval);
+    $("#triviaName").empty();
+    $("#answerButtons").empty();
+    $("#question").empty();
+    $("#timer").show();
+    $("#triviaName").append("Results")
+    $("#question").append("Correct:  " + correct +  "<br>" + " Incorrect: " + incorrect);
+    $("#timer").text("Refresh To Play Again!")
 
 }
-
-// creates timer and assigns variable/upon timeout calls time out and time length
-
-// setTimeOut = setInterval(timeOut, 10000);
-//     $("#timer").append(setTimeOut);

@@ -1,83 +1,94 @@
 #triviaName {
+    background-color: rgb(64, 150, 24);
     text-align: center;
-    font-size: 28pt;
+    color:rgb(252, 113, 33);;
+    font-family: 'Galada', cursive;
+    font-size: 50pt;
+    text-decoration: underline;
+    border-radius: 200px;
+    margin-top: 40pt;
 }
 
 #question{
-    color: black;
+    color: white;
+    font-family: 'Galada', cursive;
     font-size: 38pt;
     text-align: center;
-    border-radius: 12px;
+    border-radius: 20px;
+    background-color: rgb(252, 104, 136);
+    margin: auto;
 }
 
 .answerButton{
     -webkit-transition-duration: 0.2s;
     transition-duration: 0.2s;
-    background-color: palevioletred;
+    background-color: rgb(113, 221, 62);
     display: flex;
     justify-content: center;
-    border: none;
     color: white;
     padding: 15px 32px;
     border-radius: 8px;
     text-align: center;
     text-decoration: none;
-    font-size: 20px;
+    font-size: 28pt;
     align-items: center;
     margin: 20px auto;
+    font-family: 'Lobster', cursive;
 }
 
 .answerButton:hover {
-    background-color: rgba(255, 0, 98, 0.767);
-    color: white;  
+    background-color: rgba(250, 56, 130, 0.767);
+    color: white;
+    font-size: 32pt;
     text-align: center;
     margin: 20px auto;
+    font-family: 'Lobster', cursive;
 }
 
 #answerButtons {
-    background-color: rgb(196, 52, 107);
+    background-color: rgb(248, 121, 47);
     margin: 40px auto;
     border-radius: 30px;
-}
-
-#scoreSheet{
-    text-align: center;
-    color: black;
-    font-size: 24pt;
-    text-decoration: underline;
-    background-color: rgb(196, 52, 107);
+    left: 50%;
+    top: 50%;
+    
 }
 
 #start{
     -webkit-transition-duration: 0.2s;
     transition-duration: 0.2s;
     display: flex;
-    justify-content: left;
-    border: none;
-    color: peachpuff;
-    padding: 15px 32px;
-    border-radius: 8px;
+    color: black(255, 248, 144);  
+    padding: 15px;
+    border-radius: 12px;
+    font-family: 'Lobster', cursive;
     text-align: center;
-    text-decoration: none;
     font-size: 20px;
     align-items: center;
-    margin: 20px auto;
+    left: 45%;
+    top: 45%;
+    position: absolute;
 }
 
 #start:hover {
-    background-color: rgb(204, 5, 64);
-    color: peachpuff;  
+    background-color: rgb(255, 64, 121);
+    color: rgb(255, 245, 104);  
+    font-family: 'Lobster', cursive;
     text-align: center;
-    margin: 20px auto;
+    margin: 5px auto;
+    left: 45%;
+    top: 44%;
+    position: absolute;
 }
 
 #fullSection {
-    background-image: url(../images/peachy.png);
+    background-image: url(../images/fruit06.jpeg);
     overflow: auto;
     clear: both;
     width: 100%;
     height: 600pt;
 }
+
 
 #images{
     display: flex;
@@ -85,10 +96,21 @@
     border: none;
     color: white;
     padding: 15px 32px;
-    border-radius: 8px;
-    text-align: center;
-    text-decoration: none;
+    border-radius: 12px;
     font-size: 20px;
     align-items: center;
     margin: 20px auto;
+}
+
+#timer{
+    display: flex;
+    justify-content: center;
+    color: black;
+    font-family: 'Lobster', cursive;
+    font-size: 25pt;
+    background-color: white;
+    padding: 5pt;
+    width: 120px;
+    margin: auto;
+    border-radius: 12px;
 }
