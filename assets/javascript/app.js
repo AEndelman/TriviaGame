@@ -8,7 +8,7 @@ $("#timer").hide();
 
 var correct = 0;
 var incorrect = 0;
-var questionsLeft = 8;
+var questionsLeft = 10;
 var setSlideshow;
 var timerInterval;
 var timer = 15;
